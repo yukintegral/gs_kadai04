@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div>
+  <div>名前<input type="text" id="username"></div>
+  <div>
+    <!-- メッセージ入力欄 -->
+    <textarea id="text" rows="5" cols="20"></textarea>
+    <p class="time"></p>
+
+    <!-- 送信ボタン -->
+    <button id="send">送信</button>
+  </div>
+  <!-- チャット文字をリスト表示 -->
+  <div id="output"></div>
+</div>
+
+
+<!-- 以下JavaScript領域 -->
+        <!-- キャッシュサーバ CDNから読み込んでいる -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- 以下Firebase -->
+        <!-- CDNのバージョンに気を付ける -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script> -->
+        <!-- Add Firebase products that you want to use -->
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+        <!-- databaseの情報を使うCDN -->
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyA_1EJ_zQK0JmocdrwynX1Ng01xZMLQydk",
+          authDomain: "gsacademy-40849.firebaseapp.com",
+          databaseURL: "https://gsacademy-40849.firebaseio.com",
+          projectId: "gsacademy-40849",
+          storageBucket: "gsacademy-40849.appspot.com",
+          messagingSenderId: "14480771629",
+          appId: "1:14480771629:web:74b709b397e4d1e7b8c6a4",
+          measurementId: "G-JSXHC5CLYP"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // firebase.analytics();
+        //  MSG送受信準備
+        let newPostRef = firebase.database().ref();
+</script>
+
+
+
+<script>
+// 送信時間
+// let nowtime = new Date();
+// function LoadProc() {
+//   var target = document.getElementById("DateTimeDisp");
+//   var Month = now.getMonth()+1;
+//   var Date = now.getDate();
+//   var Hour = now.getHours();
+//   var Min = now.getMinutes();
+//   target.innerHTML = Month + "/" + Date +"_"+  Hour + ":" + Min;
+// }
+
+//  送信処理
+  $("#send").on("click",function(){
+      newPostRef.push({
+        username: $("#username").val(),
+        text: $("#text").val(),
+      });
+    $("#text").val("");
+    });
+
+
+  // 送信処理2
+  $("#text").on("keydown",function(e){
+    // console.log(e);
+    if(e.keyCode==13){
+          newPostRef.push({
+          username: $("#username").val(),
+          Text: $("#text").val()
+          });
+          $("#text").val("");
+        }
+    });
+
+  // 受信処理
+  newPostRef.on("child_added",function(data){//全てのデータを取得
+  const v = data.val();
+  const k = data.key;
+  let str = "";  
+  // const str = "<dl><dt>"+v.username+"</dl><dt>"+v.text+"</dd></dt>";
+  str += "<dl>";
+  str += "<dt>"+v.username+"</dt>";
+  str += "<dl>"+v.text+"</dd>";
+  str += "</dl>";
+  $("#output").append(str);
+  });
+
+
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
