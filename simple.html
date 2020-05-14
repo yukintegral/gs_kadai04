@@ -3,11 +3,17 @@
 <head>
 <meta charset="utf-8">
 <title>Chatアプリ</title>
+<<<<<<< HEAD
+=======
+  <!-- <link rel="stylesheet" href="css/reset.css"> -->
+  <link rel="stylesheet" href="css/style.css">
+>>>>>>> 89bb097... 20200514_001
 </head>
 <body>
 
 <!-- コンテンツ表示画面 -->
 <div>
+<<<<<<< HEAD
   <div>名前<input type="text" id="username"></div>
   <div>
     <!-- メッセージ入力欄 -->
@@ -18,10 +24,17 @@
     <button id="send">送信</button>
   </div>
   <!-- チャット文字をリスト表示 -->
+=======
+  <div>名前：<input type="text" id="uname"> </div>
+  <div><textarea id="text" cols="30" rows="10"></textarea>
+  <button id="send">送信</button>
+  </div>
+>>>>>>> 89bb097... 20200514_001
   <div id="output"></div>
 </div>
 
 
+<<<<<<< HEAD
 <!-- 以下JavaScript領域 -->
         <!-- キャッシュサーバ CDNから読み込んでいる -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -109,6 +122,98 @@
 
 
 </script>
+=======
+
+
+
+
+
+
+<!--/ コンテンツ表示画面 -->
+
+
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- JQuery -->
+<!--** 以下Firebase **-->
+<!-- The core Firebase JS SDK is always required and must be listed first -appを必ず消す全部入り-->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC090MMlWa1NLCqAgNjzfyS-477vna4gBk",
+    authDomain: "gsdemo-afcc3.firebaseapp.com",
+    databaseURL: "https://gsdemo-afcc3.firebaseio.com",
+    projectId: "gsdemo-afcc3",
+    storageBucket: "gsdemo-afcc3.appspot.com",
+    messagingSenderId: "956424045713",
+    appId: "1:956424045713:web:c2a0cb4711182d217eab30"
+  };
+  // Initialize Firebase 読み込み 
+  firebase.initializeApp(firebaseConfig);
+
+  // 毎回読み込むため
+  const ref = firebase.database().ref();
+
+
+
+// 送信イベント
+$("#send").on("click",function(){
+  const uname = $("#uname").val();//unameの値を代入
+  const text = $("#text").val();
+
+//時・分・秒を取得する
+    let today = new Date();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    const time = hour+"時"+minute+"分";
+
+  const msg = { // データ送信処理
+    uname: uname,
+    text: text+time,
+  };
+  ref.push(msg);//送信する
+});
+
+
+//エンターキーでも送信できる
+$("#text").on("keydown",function(e){
+  if(e.keyCode==13){
+    const uname = $("#uname").val();//unameの値を代入
+    const text = $("#text").val();
+    
+//時・分・秒を取得する
+let today = new Date();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    const time = hour+"時"+minute+"分";
+
+  const msg = { // データ送信処理
+    uname: uname,
+    text: text+time,
+  };
+  ref.push(msg);//送信する
+  }
+  });
+
+// 受信 2種類  child_added:毎回1個    value:全てのデータを取得 どちらか
+ref.on("child_added",function(data){ //引数でオブジェクトデータ受け取り
+  const v = data.val();              //vak()を使いオブジェクト変数を取得
+  const k = data.key;                 //UniqeKEY:データベース参照
+  const h = '<p>'+v.uname+'<br>'+v.text+'</p>'; //html文字の作成
+  $("#output").prepend(h);  //outputに差し込む
+});
+
+</script>
+
+
+>>>>>>> 89bb097... 20200514_001
 </body>
 </html>
 
