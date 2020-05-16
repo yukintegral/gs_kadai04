@@ -9,20 +9,14 @@
 <body>
 
 <!-- コンテンツ表示画面 -->
-<div>
-  <div>名前：<input type="text" id="uname"> </div>
+<div class="box">
+  <div id="output"></div>
+  <div>名前：<input type="text" id="uname"> <select id="icon"></select></div>
   <div><textarea id="text" cols="30" rows="10"></textarea>
   <button id="send">送信</button>
+  <button id="delete">削除</button>
   </div>
-  <div id="output"></div>
 </div>
-
-
-
-
-
-
-
 
 <!--/ コンテンツ表示画面 -->
 
@@ -52,7 +46,6 @@
   };
   // Initialize Firebase 読み込み 
   firebase.initializeApp(firebaseConfig);
-
   // 毎回読み込むため
   const ref = firebase.database().ref();
 
@@ -62,9 +55,19 @@
 $("#send").on("click",function(){
   const uname = $("#uname").val();//unameの値を代入
   const text = $("#text").val();
-   const msg = { // データ送信処理
-    uname: uname,
-    text: text
+//月・日・時・分を取得する
+    let today = new Date();
+    let month = today.getMonth()+1;
+    let day = today.getDate();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    let dayOfWeek = today.getDay() ;
+    let dayOfWeekStr = [ "日", "月", "火", "水", "木", "金", "土" ][dayOfWeek] ;
+    const time = month+"/"+day+"("+dayOfWeekStr+")"+hour+"時"+minute+"分";
+ 
+     const msg = { // データ送信処理
+    uname: uname+" "+time,
+    text: text,
   };
   ref.push(msg);//送信する
 });
@@ -75,33 +78,39 @@ $("#text").on("keydown",function(e){
   if(e.keyCode==13){
     const uname = $("#uname").val();//unameの値を代入
     const text = $("#text").val();
+    //月・日・時・分を取得する
+    let today = new Date();
+    let month = today.getMonth()+1;
+    let day = today.getDate();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    let dayOfWeek = today.getDay() ;
+    let dayOfWeekStr = [ "日", "月", "火", "水", "木", "金", "土" ][dayOfWeek] ;
+    const time = month+"/"+day+"("+dayOfWeekStr+")"+hour+"時"+minute+"分";
     const msg = { // データ送信処理
     uname: uname,
     text: text
     };
   ref.push(msg);//送信する
   }
+  
   });
 
 // 受信 2種類  child_added:毎回1個    value:全てのデータを取得 どちらか
 ref.on("child_added",function(data){ //引数でオブジェクトデータ受け取り
-  const v = data.val();              //vak()を使いオブジェクト変数を取得
+  const v = data.val();              //val()を使いオブジェクト変数を取得
   const k = data.key;                 //UniqeKEY:データベース参照
   const h = '<p>'+v.uname+'<br>'+v.text+'</p>'; //html文字の作成
   $("#output").append(h);  //outputに差し込む
 });
 
 
-// // 送信時間
-let time = new Date();
-function () {
-  var target = document.getElementById("DateTimeDisp");
-  var Month = now.getMonth()+1;
-  var Date = now.getDate();
-  var Hour = now.getHours();
-  var Min = now.getMinutes();
-  target.innerHTML = Month + "/" + Date +"_"+  Hour + ":" + Min;
-}
+//削除ボタン
+$("#delete").on('click',function(){;
+  firebase.database().ref().set({}) 
+  location.reload();
+});
+
 
 
 
