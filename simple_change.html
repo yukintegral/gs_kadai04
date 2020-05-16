@@ -88,8 +88,22 @@ ref.on("child_added",function(data){ //引数でオブジェクトデータ受�
   const v = data.val();              //vak()を使いオブジェクト変数を取得
   const k = data.key;                 //UniqeKEY:データベース参照
   const h = '<p>'+v.uname+'<br>'+v.text+'</p>'; //html文字の作成
-  $("#output").prepend(h);  //outputに差し込む
+  $("#output").append(h);  //outputに差し込む
 });
+
+
+// // 送信時間
+let time = new Date();
+function () {
+  var target = document.getElementById("DateTimeDisp");
+  var Month = now.getMonth()+1;
+  var Date = now.getDate();
+  var Hour = now.getHours();
+  var Min = now.getMinutes();
+  target.innerHTML = Month + "/" + Date +"_"+  Hour + ":" + Min;
+}
+
+
 
 </script>
 
